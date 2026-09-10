@@ -2,10 +2,6 @@
 
 **magi-v14-forge** is a fork of [ksx0330/FVTT-Magicalogia-System](https://github.com/ksx0330/FVTT-Magicalogia-System) that runs on **Foundry Virtual Tabletop V14 Stable 7 (build 365)**.
 
-Browse it here:
-- GitHub: [github.com/AgentKevin2077/magi-v14-forge](https://github.com/AgentKevin2077/magi-v14-forge)
-- Origin: [cursor.com/codebase/meowleftandright/magi-v14-forge](https://cursor.com/codebase/meowleftandright/magi-v14-forge)
-
 Foundry install manifest:
 
 `https://raw.githubusercontent.com/AgentKevin2077/magi-v14-forge/main/system.json`
@@ -100,20 +96,8 @@ Migrated actor JSON files live in `actors-v14/`. In Foundry, open the actor → 
 - **Ctrl** (or the client setting) opens a modifier prompt.
 - Drop an actor onto the sheet to create a **bond**.
 - Drop a **handout** item onto the canvas to place a token that opens the handout.
-- GM token tools **Start / End Magic Duel** still drive the plot bar.
-
-## Development
-
-```bash
-npm test
+- GM token tools **Start / End Magic Duel** still drive the plot bar
 ```
-
-The tests cover the specialty-distance graph (no Foundry required), language-pack key coverage, and scan templates/JS for APIs that Foundry V14 removed.
-
-To regenerate the Chinese packs from the Traditional source list:
-
-```bash
-npm run build-zh-lang
-```
-
 Original copyright: MIT, Foundry Network / ltaeng (ksx0330). This fork keeps that license.
+
+v14-compatible version: developed by meowleftandright (喵佐), assisted by Cursor.
