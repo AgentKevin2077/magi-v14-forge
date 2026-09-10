@@ -86,6 +86,10 @@ The folder name must be `magicalogia` (it must match `"id"` in `system.json`).
 
 Worlds created on the original V11 system should still open. Actor data lives in `system.*` the same way it did in V11.
 
+Updating to system **0.2.1** rebuilds specialty target numbers on existing characters the next time a GM loads the world. Old exports stored the talent grid as objects and left every cell at `12`; checked specialties should be `5`, with neighbors counting up.
+
+Migrated actor JSON files live in `actors-v14/`. In Foundry, open the actor → header menu → Import Data, or drag the JSON onto the Actors directory.
+
 ## Using the sheet
 
 - **Left-click** a specialty to roll 2d6 against its target number.

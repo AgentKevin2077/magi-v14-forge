@@ -4,6 +4,7 @@
   "type": "module",
   "description": "Foundry VTT Magicalogia system (V14 fork). Tests run without Foundry.",
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "migrate-actors": "node scripts/migrate-actor-json.mjs"
   }
 }

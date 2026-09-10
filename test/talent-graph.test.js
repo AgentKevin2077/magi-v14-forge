@@ -62,3 +62,18 @@ test("curiosity marks the two neighboring domain gaps", () => {
   assert.equal(result.gap[3], true);
   assert.equal(result.gap[1], false);
 });
+
+test("object-keyed Foundry form data still recalculates", () => {
+  const objectTable = {
+    0: { 0: { state: true, num: "12", misfortune: false } },
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+    5: {}
+  };
+  const table = getTalentTable(objectTable, emptyGap, false);
+  assert.equal(table[0][0].num, "5");
+  assert.equal(table[0][1].num, "6");
+  assert.equal(Array.isArray(table), true);
+});

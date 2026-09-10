@@ -21,6 +21,14 @@ export class MagicalogiaSettings {
       config: true
     });
 
+    game.settings.register("magicalogia", "schemaVersion", {
+      name: "Magicalogia schema version",
+      scope: "world",
+      config: false,
+      type: Number,
+      default: 0
+    });
+
     for (let i = 1; i <= 12; i++) {
       for (let j = 0; j < 6; ++j) {
         const name = String.fromCharCode(65 + j);

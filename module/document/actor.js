@@ -1,34 +1,33 @@
+import { refreshTalentGrid, applyTalentPatch } from "../talent-graph.js";
+import { migrateActorSource } from "../migrate-actor.js";
 import { Dialog, createChatMessage, getSpeaker, getWhisperRecipients, evaluateRoll, renderTemplate } from "../compat.js";
-import { applyTalentPatch } from "../talent-graph.js";
 
 const ActorDocument = globalThis.foundry?.documents?.Actor ?? globalThis.Actor;
 
 export class MagicalogiaActor extends ActorDocument {
 
+  static migrateData(source) {
+    if (typeof super.migrateData === "function") {
+      source = super.migrateData(source) ?? source;
+    }
+    return migrateActorSource(source);
+  }
+
   prepareData() {
     super.prepareData();
 
-    const table = this.system?.talent?.table;
-    if (!table) return;
+    const talent = this.system?.talent;
+    if (!talent) return;
 
-    const misfortuneState = [false, false, false, false, false, false];
-    for (let i = 0; i < 6; ++i) {
-      for (let j = 0; j < 11; ++j) {
-        if (table[i][j].misfortune) misfortuneState[i] = true;
-      }
-    }
-
-    for (let i = 0; i < 6; ++i) {
-      for (let j = 0; j < 11; ++j) {
-        this.system.talent.table[i][j].debuf = misfortuneState[i];
-      }
-    }
+    const refreshed = refreshTalentGrid(talent);
+    this.system.talent.table = refreshed.table;
+    this.system.talent.gap = refreshed.gap;
+    this.system.talent.overflowX = refreshed.overflowX;
   }
 
   /**
    * Recalculate specialty target numbers whenever the talent grid changes.
-   * The V11 code checked `'data' in changed`, which never matched V10+ `system` diffs,
-   * so checking a specialty did not update neighboring difficulties.
+   * Accepts both array grids and the object-keyed grids Foundry form submits.
    */
   async _preUpdate(changed, options, user) {
     if (changed.system?.talent) {

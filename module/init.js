@@ -5,6 +5,7 @@ import { MagicalogiaSettings } from "./settings.js";
 import { PlotSettings } from "./plot.js";
 import { PlotDialog } from "./dialog/plot-dialog.js";
 import { ActorItemToken } from "./document/token.js";
+import { migrateActorSource, talentGridNeedsPersist } from "./migrate-actor.js";
 import {
   Dialog,
   DocumentSheetConfig,
@@ -29,7 +30,7 @@ Hooks.once("init", async function () {
   }
 
   if (!ActorSheet || !ItemSheet || !Dialog) {
-    throw new Error("Magicalogia 0.2.0 requires Foundry V13+ (foundry.appv1 sheets and Dialog).");
+    throw new Error("Magicalogia 0.2.1 requires Foundry V13+ (foundry.appv1 sheets and Dialog).");
   }
 
   CONFIG.Actor.documentClass = MagicalogiaActor;
@@ -72,6 +73,32 @@ Hooks.once("ready", async function () {
     hotbar.className = "plot-bar";
     root.appendChild(hotbar);
   }
+
+  if (!game.user.isGM) return;
+  const schema = game.settings.get("magicalogia", "schemaVersion") || 0;
+  if (schema >= 2) return;
+
+  for (const actor of game.actors) {
+    if (actor.type !== "character") continue;
+    const cloned = migrateActorSource({
+      system: foundry.utils.deepClone(actor.system),
+      prototypeToken: foundry.utils.deepClone(actor.prototypeToken ?? {})
+    });
+    const patch = {
+      "system.talent.table": cloned.system.talent.table,
+      "system.talent.gap": cloned.system.talent.gap,
+      "system.mana": cloned.system.mana,
+      "system.tmp_mana": cloned.system.tmp_mana,
+      "prototypeToken.bar1.attribute": "mana",
+      "prototypeToken.bar2.attribute": "tmp_mana"
+    };
+    if (talentGridNeedsPersist(actor) || actor.prototypeToken?.bar1?.attribute !== "mana") {
+      await actor.update(patch);
+    }
+  }
+
+  await game.settings.set("magicalogia", "schemaVersion", 2);
+  ui.notifications?.info("Magicalogia: rebuilt specialty target numbers on existing characters.");
 });
 
 Hooks.on("dropCanvasData", async (canvasApp, data) => {
