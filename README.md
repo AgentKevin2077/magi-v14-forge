@@ -1,23 +1,74 @@
-FVTT Magicalogia System
--------------------
-Magicalogia System
+# Magicalogia for Foundry VTT v14
 
+A fork of [ksx0330/FVTT-Magicalogia-System](https://github.com/ksx0330/FVTT-Magicalogia-System) that runs on **Foundry Virtual Tabletop V14 Stable 7 (build 365)**.
 
-Installation Instructions
--------------
-To install the Magicalogia system for Foundry Virtual Tabletop, simply paste the following URL into the Install System
-dialog on the Setup menu of the application.
+Original git history is kept. The V11 codebase is the parent; this branch adds the V14 compatibility port on top.
 
-https://raw.githubusercontent.com/ksx0330/FVTT-Magicalogia-System/main/system.json
+```bash
+git remote add upstream https://github.com/ksx0330/FVTT-Magicalogia-System.git
+```
 
+The original system last verified against **Foundry 11.315**. It is a complete Magicalogia character sheet: specialty grid, grimoires, bonds, handouts, true form, and magic-duel plots. This fork keeps that sheet and updates the Foundry APIs underneath it.
 
-Picture
-------------
+## Why the original did not load on V14
 
-![image](https://user-images.githubusercontent.com/15700174/210094674-83262573-ac01-41ea-a6a9-0e292a70f6aa.png)
+Foundry did not just “bump a version number.” Between V11 and V14 several APIs the system called were relocated or deleted. The usual symptoms are:
 
-![image](https://user-images.githubusercontent.com/15700174/210094801-a26a7ed0-d656-47b7-811d-49aeb4af5dcc.png)
+- Foundry Setup marks the system **incompatible**
+- Enabling a world throws in the console (`html.on is not a function`, `select is not a helper`, `duplicate is not defined`, `controls[0] is undefined`)
+- The character sheet never opens, or opens as a blank window
 
-![image](https://user-images.githubusercontent.com/15700174/210094977-e367577d-b5d3-47df-8e9e-5bc2df601c46.png)
+These are the actual missing links:
 
-![image](https://user-images.githubusercontent.com/15700174/210094846-9c317a7d-0d3b-4393-a697-3fc8d0e98470.png)
+| Break | When | What the V11 code did | What V14 requires |
+| --- | --- | --- | --- |
+| Compatibility manifest | V12+ | `"verified": "11.315"` | `compatibility.minimum` / `verified` covering V14 |
+| `System#gridDistance` / `gridUnits` | V14 | top-level `gridDistance` in `system.json` | `"grid": { "distance", "units" }` |
+| Handlebars `{{#select}}` | V14 | used on the character and ability sheets | removed; use `selected` on `<option>` |
+| ApplicationV1 globals | V13 | `ActorSheet`, `ItemSheet`, `Dialog`, `FormApplication` | `foundry.appv1.sheets.*` / `foundry.appv1.api.*` |
+| `duplicate()` | V14 | clone talent tables and scene flags | `foundry.utils.deepClone()` |
+| `ChatMessage#user` | V14 | `user: game.user.id` on chat data | `author` |
+| Chat log hook | V13 | `html.on('click', …)` assuming jQuery | ChatLog is ApplicationV2; `html` is an `HTMLElement` |
+| Scene controls | V13 | `controls[0].tools.push(...)` | `controls` is an object; `tools` is keyed by name |
+| Grid snapping | V12/V14 | `canvas.grid.w` / `getSnappedPosition` | `canvas.grid.sizeX` / `getSnappedPoint` |
+| Token image | V10 shim removed | `token.update({ img })` | `token.update({ "texture.src": … })` |
+| Sheet registration | V13 | `Actors.registerSheet` | `foundry.applications.apps.DocumentSheetConfig` |
+| Talent `_preUpdate` | V10 leftover | checked `'data' in changed` | actor diffs live under `system`, so specialties never recalculated |
+
+ApplicationV1 sheets still exist in V14 under `foundry.appv1`, so this fork keeps the original layout instead of rewriting the UI in ApplicationV2. The crash was not “old sheets are forbidden”; it was the globals, helpers, and hooks around those sheets.
+
+## Install
+
+1. In Foundry, open **Setup → Game Systems → Install System**.
+2. If you have a `system.json` URL for this fork, paste it there.
+3. Otherwise copy this folder into Foundry’s data directory:
+
+```
+<Foundry User Data>/Data/systems/magicalogia/
+```
+
+The folder name must be `magicalogia` (it must match `"id"` in `system.json`).
+
+4. Create or open a world that uses **Magicalogia System**. Foundry V14.365 is the verified build.
+
+Worlds created on the original V11 system should still open. Actor data lives in `system.*` the same way it did in V11.
+
+## Using the sheet
+
+- **Left-click** a specialty to roll 2d6 against its target number.
+- **Right-click** a specialty to mark misfortune (that whole domain takes −1).
+- **Shift-click** a specialty, then another, to chain `A -> B` for a connected check.
+- **Ctrl** (or the client setting) opens a modifier prompt.
+- Drop an actor onto the sheet to create a **bond**.
+- Drop a **handout** item onto the canvas to place a token that opens the handout.
+- GM token tools **Start / End Magic Duel** still drive the plot bar.
+
+## Development
+
+```bash
+npm test
+```
+
+The tests cover the specialty-distance graph (no Foundry required) and scan templates/JS for APIs that Foundry V14 removed.
+
+Original copyright: MIT, Foundry Network / ltaeng (ksx0330). This fork keeps that license.

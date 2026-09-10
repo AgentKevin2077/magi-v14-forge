@@ -1,0 +1,9 @@
+{
+  "name": "fvtt-magicalogia-system",
+  "private": true,
+  "type": "module",
+  "description": "Foundry VTT Magicalogia system (V14 fork). Tests run without Foundry.",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  }
+}
