@@ -2,7 +2,7 @@
   "id": "magicalogia",
   "title": "Magicalogia System",
   "description": "Foundry VTT system for Magicalogia (マギカロギア). Fork of ksx0330/FVTT-Magicalogia-System with Foundry V14 compatibility.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "compatibility": {
     "minimum": "13",
     "verified": "14.365"
@@ -38,6 +38,16 @@
       "lang": "ja",
       "name": "日本語",
       "path": "lang/ja.json"
+    },
+    {
+      "lang": "zh-TW",
+      "name": "正體中文",
+      "path": "lang/zh-TW.json"
+    },
+    {
+      "lang": "zh-CN",
+      "name": "简体中文",
+      "path": "lang/zh-CN.json"
     }
   ],
   "packs": [],

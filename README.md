@@ -88,6 +88,8 @@ Worlds created on the original V11 system should still open. Actor data lives in
 
 Updating to system **0.2.1** rebuilds specialty target numbers on existing characters the next time a GM loads the world. Old exports stored the talent grid as objects and left every cell at `12`; checked specialties should be `5`, with neighbors counting up.
 
+**0.2.2** adds Traditional Chinese (`zh-TW`) and Simplified Chinese (`zh-CN`) language packs. Foundry uses the client language (Configure → Language). Terminology follows the fan 魔導書大戰 character sheet: 偽名, 當前魔力, 藏書, 指定特技, 咒句, 變調, plus the specialty names 愛慾 / 離別 / 戀愛 / 迷惘 / 愚昧. Simplified Chinese is a conversion of that same wording, not a separate translation from English.
+
 Migrated actor JSON files live in `actors-v14/`. In Foundry, open the actor → header menu → Import Data, or drag the JSON onto the Actors directory.
 
 ## Using the sheet
@@ -106,6 +108,12 @@ Migrated actor JSON files live in `actors-v14/`. In Foundry, open the actor → 
 npm test
 ```
 
-The tests cover the specialty-distance graph (no Foundry required) and scan templates/JS for APIs that Foundry V14 removed.
+The tests cover the specialty-distance graph (no Foundry required), language-pack key coverage, and scan templates/JS for APIs that Foundry V14 removed.
+
+To regenerate the Chinese packs from the Traditional source list:
+
+```bash
+npm run build-zh-lang
+```
 
 Original copyright: MIT, Foundry Network / ltaeng (ksx0330). This fork keeps that license.
