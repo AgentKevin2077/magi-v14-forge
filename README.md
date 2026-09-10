@@ -2,7 +2,13 @@
 
 **magi-v14-forge** is a fork of [ksx0330/FVTT-Magicalogia-System](https://github.com/ksx0330/FVTT-Magicalogia-System) that runs on **Foundry Virtual Tabletop V14 Stable 7 (build 365)**.
 
-Browse the repo: [cursor.com/codebase/meowleftandright/magi-v14-forge](https://cursor.com/codebase/meowleftandright/magi-v14-forge)
+Browse it here:
+- GitHub: [github.com/AgentKevin2077/magi-v14-forge](https://github.com/AgentKevin2077/magi-v14-forge)
+- Origin: [cursor.com/codebase/meowleftandright/magi-v14-forge](https://cursor.com/codebase/meowleftandright/magi-v14-forge)
+
+Foundry install manifest:
+
+`https://raw.githubusercontent.com/AgentKevin2077/magi-v14-forge/main/system.json`
 
 Original git history is kept. The V11 codebase is the parent; this branch adds the V14 compatibility port on top. The original remote is `upstream`:
 

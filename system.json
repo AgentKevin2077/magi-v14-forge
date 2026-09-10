@@ -48,7 +48,9 @@
   "socket": true,
   "primaryTokenAttribute": "mana",
   "secondaryTokenAttribute": "tmp_mana",
-  "url": "https://cursor.com/codebase/meowleftandright/magi-v14-forge",
-  "bugs": "https://github.com/ksx0330/FVTT-Magicalogia-System/issues",
+  "url": "https://github.com/AgentKevin2077/magi-v14-forge",
+  "manifest": "https://raw.githubusercontent.com/AgentKevin2077/magi-v14-forge/main/system.json",
+  "download": "https://github.com/AgentKevin2077/magi-v14-forge/archive/refs/heads/main.zip",
+  "bugs": "https://github.com/AgentKevin2077/magi-v14-forge/issues",
   "license": "LICENSE.txt"
 }
