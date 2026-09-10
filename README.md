@@ -1,8 +1,10 @@
 # Magicalogia for Foundry VTT v14
 
-A fork of [ksx0330/FVTT-Magicalogia-System](https://github.com/ksx0330/FVTT-Magicalogia-System) that runs on **Foundry Virtual Tabletop V14 Stable 7 (build 365)**.
+**magi-v14-forge** is a fork of [ksx0330/FVTT-Magicalogia-System](https://github.com/ksx0330/FVTT-Magicalogia-System) that runs on **Foundry Virtual Tabletop V14 Stable 7 (build 365)**.
 
-Original git history is kept. The V11 codebase is the parent; this branch adds the V14 compatibility port on top.
+Browse the repo: [cursor.com/codebase/meowleftandright/magi-v14-forge](https://cursor.com/codebase/meowleftandright/magi-v14-forge)
+
+Original git history is kept. The V11 codebase is the parent; this branch adds the V14 compatibility port on top. The original remote is `upstream`:
 
 ```bash
 git remote add upstream https://github.com/ksx0330/FVTT-Magicalogia-System.git
@@ -37,7 +39,32 @@ These are the actual missing links:
 
 ApplicationV1 sheets still exist in V14 under `foundry.appv1`, so this fork keeps the original layout instead of rewriting the UI in ApplicationV2. The crash was not “old sheets are forbidden”; it was the globals, helpers, and hooks around those sheets.
 
-## Install
+## Clone this repo
+
+Origin CLI runs on macOS, Linux, and WSL. On Windows, use WSL, not PowerShell:
+
+```bash
+# Run in WSL (Origin CLI is not available in PowerShell)
+# Install the Origin CLI
+curl -fsSL https://downloads.cursor.com/origin/install.sh | sh
+
+# Sign in (also sets up git credentials)
+origin auth login
+
+# Clone the repository
+origin repo clone meowleftandright/magi-v14-forge
+```
+
+If `origin` is not found after install:
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+CLI docs: [cursor.com/docs/origin/cli](https://cursor.com/docs/origin/cli)
+
+## Install in Foundry
 
 1. In Foundry, open **Setup → Game Systems → Install System**.
 2. If you have a `system.json` URL for this fork, paste it there.
